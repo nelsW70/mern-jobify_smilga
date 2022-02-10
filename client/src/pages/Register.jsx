@@ -17,7 +17,7 @@ const Register = () => {
   const [values, setValues] = useState(initialState);
 
   // global context and useNavigate later
-  const { isLoading, showAlert, displayAlert } = useAppContext();
+  const { isLoading, showAlert, displayAlert, registerUser } = useAppContext();
 
   const toggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
@@ -34,7 +34,13 @@ const Register = () => {
       displayAlert();
       return;
     }
-    console.log(values);
+
+    const currentUser = { name, email, password };
+    if (isMember) {
+      console.log('already a member');
+    } else {
+      registerUser(currentUser);
+    }
   };
 
   return (
@@ -42,10 +48,8 @@ const Register = () => {
       <form className="form" onSubmit={onSubmit}>
         <Logo />
         <h3>{values.isMember ? 'Login' : 'Register'}</h3>
-
         {showAlert && <Alert />}
-
-        {/* toggle name */}
+        {/* name input */}
         {!values.isMember && (
           <FormRow
             type="text"
@@ -68,12 +72,11 @@ const Register = () => {
           value={values.password}
           handleChange={handleChange}
         />
-        <button type="submit" className="btn btn-block">
+        <button type="submit" className="btn btn-block" disabled={isLoading}>
           submit
         </button>
         <p>
           {values.isMember ? 'Not a member yet?' : 'Already a member?'}
-
           <button type="button" onClick={toggleMember} className="member-btn">
             {values.isMember ? 'Register' : 'Login'}
           </button>
