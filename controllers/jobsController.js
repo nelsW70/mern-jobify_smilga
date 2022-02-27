@@ -24,10 +24,12 @@ const getAllJobs = async (req, res) => {
     createdBy: req.user.userId,
   };
 
-  if (status !== 'all') {
+  // add stuff based on condition
+  // TODO: remove after fe setup
+  if (status && status !== 'all') {
     queryObject.status = status;
   }
-  if (jobType !== 'all') {
+  if (jobType && jobType !== 'all') {
     queryObject.jobType = jobType;
   }
   if (search) {
